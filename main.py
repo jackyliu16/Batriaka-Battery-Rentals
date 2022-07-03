@@ -12,13 +12,8 @@
 '''
 
 # IMPORT LIB
-
+import SystemController
 
 if __name__ == "__main__":
 
-    print("Welcome to the management system!")
-    print("please input a number to select and login in your User group")
-    print("\t1. Custom\n\t2. Admin\n\t3. Owners")
-    number = input(":\>")
-    while number not in ['1', '2', '3', '4']:
-        number = input(">")
+    controller = SystemController.SysteController()    
