@@ -33,9 +33,10 @@ class _Battery(object):
         self.detail = detail
         self.price = price
         self.number_now = nember_now
+    def __repr__(self) -> str:
+        return self.__str__()
 
     def __str__(self):
-        print(f"type:{self.type}\ndetail:\t{self.detail}")
         return f"type:{self.type}\ndetail:\t{self.detail}"
 
 class Fee(metaclass=abc.ABCMeta):
@@ -75,19 +76,18 @@ class Order(object):
 class SysteController(object):
     Finished_Order: Dict[str, Order]
     Renting_Order: Dict[str, Order]
-    Battery_Dict: Dict[str, _Battery]
+    Battery_Dict: List[_Battery]
 
     def __init__(self) -> None:
         self.Finished_Order = {}
         self.Renting_Order = {}
-        self.Battery_Dict = {}
+        self.Battery_Dict = []
 
         # adding something inside 
-        self.Battery_Dict['0'] = type('BikeBattery', (_Battery, ), {'id':'0', 'type':"bike battery", "detail": "detail", "price":20, "number_now":5, '__str__':_Battery.__str__})
-        self.Battery_Dict['1'] = type('CarBattery', (_Battery, ), {'id':'1', 'type':"car battery", "detail": "detail", "price":20, "number_now":5})
+        self.Battery_Dict.append(_Battery('0', 'BikeBattery', 'a bike battery', 10.0, 10))
+        self.Battery_Dict.append(_Battery('1', 'CarBattery', 'a car battery', 20.0, 5))
 
-        print(self.Battery_Dict['0'])
-
+        [print(i) for i in self.Battery_Dict]
 
 if __name__ == "__main__":
     controller = SysteController()
