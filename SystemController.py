@@ -12,67 +12,84 @@
 """
 
 #IMPORT LIB
+from abc import abstractclassmethod, abstractmethod
 from typing import Dict, List
 import time
+import abc
 import pickle
 
-class _Battery(object):
-    _specification: str
-    _price: int
-    number: int
+# Fisrt version: only include a simple implement [No encapsulation]
 
-    def __init__(self, name:str, describes:str, price:int, number:int)->None:
-        self._class_name = name
-        self._specification = describes
-        self._price = price
-        self._number = number
+class _Battery(object):
+    id: str
+    type: str
+    detail: str
+    price: float
+    number_now: int
+
+    def __init__(self, id:str, type:str, detail:str, price:float, nember_now:int=0) -> None:
+        self.id = id
+        self.type = type
+        self.detail = detail
+        self.price = price
+        self.number_now = nember_now
 
     def __str__(self):
-        #TODO make it as desc battery information
+        print(f"type:{self.type}\ndetail:\t{self.detail}")
+        return f"type:{self.type}\ndetail:\t{self.detail}"
+
+class Fee(metaclass=abc.ABCMeta):
+    limitation: List[int] # was a list of int of each battery
+    rate: float
+
+    @abc.abstractmethod
+    def calculate(self):
         pass
 
-    def set_class_name(self, class_name:str)->None:
-        self._class_name = class_name
-    def set_specification(self, specification:str)->None:
-        self._specification = specification
+class default_Fee(Fee):
+    def __init__(self) -> None:
+        global controller
+        self.limitation = [100 for _ in controller.Battery_List]
+        self.rate = 1
 
-    def set_price(self, price:int)->None:
-        self._price = price
-    def set_number(self, number)->None:
-        self._number = number
-
-    def get_class_name(self)->str:
-        return self._class_name
-    def get_specification(self)->str:
-        return self._specification
-    def get_price(self)->int:
-        return self._price
-    def get_number(self)->int:
-        return self._number
-
-
-class Orders(object):
+class Order(object):
     id:str
-    rental_list: Dict[_Battery, int]
-    rental_start_time:time
-    rental_end_time:time
-    rental_theory_end_time:time
-    order_fees:int
+    custom_id: str
+    admin_id: str
+    rental_list: Dict[str, int] # the first str is the id of battery
+    rental_start_time: time
+    rental_end_time: time
+    rental_theory_end_time: time
+    order_fees_model: Fee
+
+    def __init__(self, id:str, custom_id:str, admin_id:str, rental_list: Dict[str, int], tenancy_term) -> None:
+        self.id = id
+        self.custom_id = custom_id
+        self.admin_id = admin_id
+        self.rental_list = rental_list
+        self.rental_start_time = time.time()
+        self.rental_end_time = None
+        # TODO finish the calucate of tenancy to rental_end_time 
+        # self.rental_theory_end_time = self.rental_start_time + 
+
+class SysteController(object):
+    Finished_Order: Dict[str, Order]
+    Renting_Order: Dict[str, Order]
+    Battery_Dict: Dict[str, _Battery]
+
+    def __init__(self) -> None:
+        self.Finished_Order = {}
+        self.Renting_Order = {}
+        self.Battery_Dict = {}
+
+        # adding something inside 
+        self.Battery_Dict['0'] = type('BikeBattery', (_Battery, ), {'id':'0', 'type':"bike battery", "detail": "detail", "price":20, "number_now":5, '__str__':_Battery.__str__})
+        self.Battery_Dict['1'] = type('CarBattery', (_Battery, ), {'id':'1', 'type':"car battery", "detail": "detail", "price":20, "number_now":5})
+
+        print(self.Battery_Dict['0'])
 
 
-class Controller(object):
-    Finished_Order: List[Orders]
-    Renting_Order: List[Orders]
+if __name__ == "__main__":
+    controller = SysteController()
 
-    def __init__(self):
-        with open("Finish_Order.obj", 'w') as File:
-            self.Finished_Order = pickle.load(File)
-        with open("Renting_Order.obj", 'w') as File:
-            self.Renting_Order  = pickle.load(File)
-
-    def find_item(self, name:str) -> Orders:
-        pass
-
-    def change_item(self, item:Orders, attr_name:str, to):
-        pass
 
