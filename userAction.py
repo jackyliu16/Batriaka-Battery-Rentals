@@ -53,42 +53,7 @@ class User(object):
         #TODO finish perform action
         pass
 
-    #TODO improved coupling and module independence
-    #TODO the ways of update need to be change
-    @staticmethod        
-    def appointment(self):
-        print(f"you are now appointment for {self.user_name}") 
-        print("please input the need of your battery type! (one's)")
-        
-        [print(f'{i}.{controller().Battery_List[i]}') for i in range(len(controller().Battery_List))]
-        
-        while input("do you want to end of your select?") :
-            
-            inp = input(":>")
-            while inp not in [f'{i}' for i in range(0, len(controller().Battery_List))]:
-                inp = input(":>")
-            
-            print(f"you have select {controller().Battery_Dict[int(inp)]}, how many did you want to pick? ")
-            
-            inp2 = input(":>")
-            while not inp2.isdigit():
-                inp2 = input(":>")
-                
-            inp2 = int(inp2)
-            rental_list = {}
-            
-            if controller().Battery_List[int(inp)].number_now >= inp2:
-                rental_list[controller().Battery_Dict[int(inp)]] = inp2
-            else:
-                print("you reserve too many modules and cannot meet them") 
-        
-            print
-            inp3 = int(input("how many days you want to rent it ? a days == 1, a month == 30"))
-            while inp3 < 0 and inp3 >= 30:
-                inp3 = int(input("how many days you want to rent it ? a days == 1, a month == 30"))
-        
-        
-        controller().messageBox.append(Order("1", self.id, None, rental_list, inp3))
+
     
 
 class Custom(User):
@@ -102,9 +67,9 @@ class Custom(User):
     
     def perform_action(self, inp):
         if inp == "1":
-            self.appointment(self)
+            return 1
         elif inp == "2":
-            return 1 # show inventory
+            return 2 # show inventory
     
     def show_action(self):
         print("""

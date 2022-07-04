@@ -58,6 +58,8 @@ class SysteController(object):
                 if action == 1:
                     self.show_inventory()
                 elif action == 2:
+                    self.appointment(self.user_now)
+                elif action == -1:
                     # login out
                     self.user_now = None
                     break
@@ -93,6 +95,43 @@ class SysteController(object):
         user_password = input("please input password: ")
         user_create = userType(user_name, user_password)
         self.UserList.append(user_create)
+        
+    #TODO improved coupling and module independence
+    #TODO the ways of update need to be change
+    @staticmethod        
+    def appointment(self:User):
+        print(f"you are now appointment for {self.user_name}") 
+        print("please input the need of your battery type! (one's)")
+        
+        [print(f'{i}.{controller().Battery_List[i]}') for i in range(len(controller().Battery_List))]
+        
+        while input("do you want to end of your select?") :
+            
+            inp = input(":>")
+            while inp not in [f'{i}' for i in range(0, len(controller().Battery_List))]:
+                inp = input(":>")
+            
+            print(f"you have select {controller().Battery_Dict[int(inp)]}, how many did you want to pick? ")
+            
+            inp2 = input(":>")
+            while not inp2.isdigit():
+                inp2 = input(":>")
+                
+            inp2 = int(inp2)
+            rental_list = {}
+            
+            if controller().Battery_List[int(inp)].number_now >= inp2:
+                rental_list[controller().Battery_Dict[int(inp)]] = inp2
+            else:
+                print("you reserve too many modules and cannot meet them") 
+        
+            print
+            inp3 = int(input("how many days you want to rent it ? a days == 1, a month == 30"))
+            while inp3 < 0 and inp3 >= 30:
+                inp3 = int(input("how many days you want to rent it ? a days == 1, a month == 30"))
+        
+        
+        controller().messageBox.append(Order("1", self.id, None, rental_list, inp3))
     
 def global_var():
     global controller
