@@ -32,3 +32,5 @@ class _Battery(object):
     def __str__(self):
         return f"type:{self.type}  \tprice:{self.price}\tnumber:{self.number_now}\ndetail:\t{self.detail}"
 
+    def information_print():
+        return f"type:{self.type}\tprice:{self.price}\tnumber:{self.number_now}"

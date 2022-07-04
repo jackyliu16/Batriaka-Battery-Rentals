@@ -16,8 +16,6 @@
 import abc
 from typing import List
 from FeesAndOrder import Order
-from SystemController import SysteController
-
 
 class User(object):
     user_name: str
@@ -67,14 +65,17 @@ class Custom(User):
     
     def perform_action(self, inp):
         if inp == "1":
-            return 1
+            return 2
         elif inp == "2":
-            return 2 # show inventory
+            return 1 # show inventory
+        elif inp == "0":
+            return -1
     
     def show_action(self):
         print("""
               \t1.appointment
               \t2.show inventory        
+              \t0.login out
               """)
         pass
 
@@ -83,13 +84,30 @@ class Admin(User):
     def __init__(self, user_name, user_passwd):
         super().__init__(user_name, user_passwd)
     
-    def appointment_for_they(self):
-        #TODO give a appointment in system 
-        pass
-    
+    def perform_action(self, inp):
+        if inp == '1':
+            inp = input("please input customer name: >")
+            return user_name 
+        elif inp == '2':return 1 
+        elif inp == "3":return 3
+        elif inp == "4":return 4
+        elif inp == "5":return 5
+        elif inp == "6":return 6
+        elif inp == "7":return 7
+        elif inp == '0':return -1
+              
     def show_action(self):
-        #TODO finish action show 
-        pass
+        print("""
+              1. appointment
+              2. show inventory 
+              3. see message
+              4. delete message
+              5. transmit message
+              6. add battery
+              7. change battery information
+              8. delete battery
+              0. quit ac count
+              """)
     
 class Owner(Admin):
     

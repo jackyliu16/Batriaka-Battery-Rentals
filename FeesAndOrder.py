@@ -15,6 +15,7 @@
 import abc
 from typing import *
 import time
+from Battery import _Battery
 
 
 class Fee(metaclass=abc.ABCMeta):
@@ -34,7 +35,7 @@ class Order(object):
     id:str
     custom_id: str
     admin_id: str
-    rental_list: Dict[str, int] # the first str is the id of battery
+    rental_Dict: Dict[_Battery, int] 
     rental_start_time: time
     rental_end_time: time
     rental_theory_end_time: time
@@ -44,8 +45,13 @@ class Order(object):
         self.id = id
         self.custom_id = custom_id
         self.admin_id = admin_id
-        self.rental_list = rental_list
+        self.rental_Dict = rental_list
         self.rental_start_time = time.time()
         self.rental_end_time = None
         # TODO finish the calucate of tenancy to rental_end_time 
         # self.rental_theory_end_time = self.rental_start_time + 
+        
+    def __str__(self):
+        # it seem we chouldn't using \t here
+        return str([f"{i.type}   {self.rental_Dict[i]}" for i in self.rental_Dict])
+    
