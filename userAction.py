@@ -34,21 +34,12 @@ class User(object):
         # global controller
         # because it couldn't been use so we using return value make it possibility
     
-    @staticmethod
-    def login_out():
-        #TODO finish login out
-        return 2
-   
     @abc.abstractmethod
     def show_action(self):
-        """
-        show what kinds of action could they do
-        """
         pass
     
     @abc.abstractmethod
     def perform_action(self, inp):
-        #TODO finish perform action
         pass
 
 
@@ -101,6 +92,7 @@ class Admin(User):
               
     def show_action(self):
         print("""
+              0. quit account
               1. appointment
               2. show inventory 
               3. see message
@@ -111,7 +103,6 @@ class Admin(User):
               8. delete battery
               9. show Renting order
               10. checkout order
-              0. quit ac count
               """)
     
 class Owner(Admin):
@@ -131,9 +122,30 @@ class Owner(Admin):
         pass
     
     def show_action(self):
-        #TODO finish action show 
+        super().show_action()
+        print("""\t      11. display information
+              12. add admin
+                """)
         pass
 
+    def perform_action(self, inp):
+        if inp == '0':return -1
+        elif inp == '1':
+            # actually this part we could also implement in SystomController.py
+            inp = input("please input customer name: >")
+            return user_name 
+        elif inp == '2':return 1 
+        elif inp == "3":return 3
+        elif inp == "4":return 4
+        elif inp == "5":return 5
+        elif inp == "6":return 6
+        elif inp == "7":return 7
+        elif inp == "8":return 8
+        elif inp == "9":return 9
+        elif inp == "10":return 10
+        elif inp == "11":return 11
+        elif inp == "12":return 12
+        
 
     
     

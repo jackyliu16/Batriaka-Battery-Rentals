@@ -17,6 +17,7 @@ from typing import Dict, List
 import time
 from FeesAndOrder import Fee, Order
 from Battery import _Battery
+import datetime
 
 
 
@@ -184,11 +185,15 @@ class SysteController(object):
                         # if all need could be satisfy
                         for key in order.rental_Dict:
                             key.number_now += order.rental_Dict[key]
-                            print(key.number_now)
+                        order.rental_end_time = datetime.datetime.now()
                         self.Renting_Order.remove(order)
                         self.Finished_Order.append(order)
-                    
-                    
+                elif action == 11:
+                    # display information
+                    # TODO finish this 
+                    pass
+                elif action == 12:
+                    self.register('admin')
                 else:
                     # if action not in [user.user_name for user in self.UserList]:
                     #     pass
@@ -198,7 +203,9 @@ class SysteController(object):
                             self.appointment(action)
                 
     def show_inventory(self):
+        print("="*30)
         [print(i) for i in self.Battery_List]
+        print("="*30)
         
        
     def login(self):

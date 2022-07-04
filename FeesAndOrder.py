@@ -16,7 +16,7 @@ import abc
 from typing import *
 import time
 from Battery import _Battery
-
+import datetime
 
 class Fee(metaclass=abc.ABCMeta):
     rate: float
@@ -46,10 +46,10 @@ class Order(object):
         self.custom_id = custom_id
         self.admin_id = admin_id
         self.rental_Dict = rental_list
-        self.rental_start_time = time.time()
+        self.rental_start_time = datetime.datetime.now() 
         self.rental_end_time = None
         # TODO finish the calucate of tenancy to rental_end_time 
-        # self.rental_theory_end_time = self.rental_start_time + 
+        self.rental_theory_end_time = self.rental_start_time + datetime.timedelta(days=tenancy_term) 
         
     def __str__(self):
         # it seem we chouldn't using \t here
