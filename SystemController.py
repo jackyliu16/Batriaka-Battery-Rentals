@@ -98,6 +98,97 @@ class SysteController(object):
                             print(key.number_now)
                         self.messageBox.remove(order)
                         self.Renting_Order.append(order)
+                elif action == 6:
+                    print("you are now go into a process which will adding a battery inside to list!")
+                    print("there are 3 things you have to input\n\tthe type of battery,\n\tthe detail inforamtionof it, \n\tthe price, and also the number(default=0)")
+                    # _Battery(id, type, detail, price)
+                    
+                    type_in = input("please input type of the battery:\t" )
+                    while type_in == "" :
+                        type_in = input("please input type of the battery:\t" )
+                    
+                    detail = input("please input the detail information of battery:\t")
+                    while detail == "":
+                        detail = input("please input the detail information of battery:\t")
+
+                    price = input("please input the price of battery:\t")
+                    while not price.isdigit() :
+                        price = input("please reinput price, which is because you input error message!!!:\t")
+                        
+                    print("if you want to input number of the battery now, you can just do it(only one changes)")
+                    number = input("please input the number of battery: ")
+                    
+                    self.Battery_List.append(_Battery("1", type_in, detail, price, number))
+                elif action == 7:
+                    print("you are now changing the information of battery")
+                    print("""
+                          please select a Battery you want to change
+                          """)    
+                    for index in range(len(self.Battery_List)):
+                        print("\t", index, self.Battery_List[index].type, end="\n")
+                    
+                    inp = int(input("select a number of Battery: "))
+                    while inp < 0 or inp > len(self.Battery_List):
+                        inp = int(input("select a number of Battery: "))
+
+                    print("""\t\tselect a attribute:
+            \t1.type
+            \t2.detail
+            \t3.price
+            \t4.number
+                          """)
+
+                    inp2 = int(input("select a attriabute you want to change: "))
+                    while inp2 not in [1,2,3,4]:
+                        inp2 = int(input("select a attriabute you want to change: "))
+
+                    inp3 = input("please input what you want to change to: ")
+                    while (inp2 == 3 or inp2 == 4 ) and inp3.isdigit():
+                        inp3 = input("please input what you want to change to: ")
+                    if inp2 == 3 or inp2 == 4:
+                        inp3 = int(inp3)
+
+                    battery = self.Battery_List[inp]
+                    if inp2 == 1:
+                        battery.__setattr__('type', inp3)
+                    elif inp2 == 2:
+                        battery.__setattr__('detail', inp3)
+                    elif inp2 == 3:
+                        battery.__setattr__('price', inp3)
+                    elif inp2 == 4:
+                        battery.__setattr__('number_now', inp3)                                            
+                elif action == 8:
+                    print("you are now changing the information of battery")
+                    print("""
+                          please select a Battery you want to change
+                          """)    
+                    for index in range(len(self.Battery_List)):
+                        print("\t", index, self.Battery_List[index].type, end="\n")
+                        
+                    self.Battery_List.remove(index)
+                    print("finish remove battery!")
+                elif action == 9:
+                    for item in self.Renting_Order:
+                        print(item)
+                elif action == 10:
+                    # checkout order
+        
+                    for item in self.Renting_Order:
+                        print(item)
+                    
+                    inp = int(input("please input the number of order you want to transmit!:>"))
+                    if inp < 0 or inp > len(self.Renting_Order):
+                        print("ERROR: index out of bround!!!")
+                    else:
+                        order:Order = self.Renting_Order[inp]
+                        # if all need could be satisfy
+                        for key in order.rental_Dict:
+                            key.number_now += order.rental_Dict[key]
+                            print(key.number_now)
+                        self.Renting_Order.remove(order)
+                        self.Finished_Order.append(order)
+                    
+                    
                 else:
                     # if action not in [user.user_name for user in self.UserList]:
                     #     pass
@@ -139,7 +230,10 @@ class SysteController(object):
         elif userType == "admin":
             user_create = Admin(user_name, user_password)
         self.UserList.append(user_create)
+       
+    # def get_num():
         
+     
     #TODO improved coupling and module independence
     #TODO the ways of update need to be change
     def appointment(self, user:User):

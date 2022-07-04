@@ -94,6 +94,9 @@ class Admin(User):
         elif inp == "5":return 5
         elif inp == "6":return 6
         elif inp == "7":return 7
+        elif inp == "8":return 8
+        elif inp == "9":return 9
+        elif inp == "10":return 10
         elif inp == '0':return -1
               
     def show_action(self):
@@ -106,6 +109,8 @@ class Admin(User):
               6. add battery
               7. change battery information
               8. delete battery
+              9. show Renting order
+              10. checkout order
               0. quit ac count
               """)
     
