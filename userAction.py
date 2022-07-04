@@ -7,7 +7,7 @@
 @version: 1.0
 @Contact: 18922251299@163.com
 @reference: 
-    1.
+    1. how to using a variable in other module https://blog.csdn.net/weixin_42444172/article/details/124043875
     2.
 '''
 
@@ -15,6 +15,9 @@
 # IMPORT LIB
 import abc
 from typing import List
+from FeesAndOrder import Order
+from SystemController import SysteController
+
 
 class User(object):
     user_name: str
@@ -27,20 +30,22 @@ class User(object):
     def login_in_check(self, passwd: str) -> bool:
         return self.__pass_word == passwd
 
+    @staticmethod
     def check_inventory():
-        # TODO finish inventory show 
-        pass
+        return 1
+        # global controller
+        # because it couldn't been use so we using return value make it possibility
     
+    @staticmethod
     def login_out():
         #TODO finish login out
-        pass
+        return 2
    
     @abc.abstractmethod
     def show_action(self):
         """
         show what kinds of action could they do
         """
-        # TODO show_and_action
         pass
     
     @abc.abstractmethod
@@ -48,6 +53,43 @@ class User(object):
         #TODO finish perform action
         pass
 
+    #TODO improved coupling and module independence
+    #TODO the ways of update need to be change
+    @staticmethod        
+    def appointment(self):
+        print(f"you are now appointment for {self.user_name}") 
+        print("please input the need of your battery type! (one's)")
+        
+        [print(f'{i}.{controller().Battery_List[i]}') for i in range(len(controller().Battery_List))]
+        
+        while input("do you want to end of your select?") :
+            
+            inp = input(":>")
+            while inp not in [f'{i}' for i in range(0, len(controller().Battery_List))]:
+                inp = input(":>")
+            
+            print(f"you have select {controller().Battery_Dict[int(inp)]}, how many did you want to pick? ")
+            
+            inp2 = input(":>")
+            while not inp2.isdigit():
+                inp2 = input(":>")
+                
+            inp2 = int(inp2)
+            rental_list = {}
+            
+            if controller().Battery_List[int(inp)].number_now >= inp2:
+                rental_list[controller().Battery_Dict[int(inp)]] = inp2
+            else:
+                print("you reserve too many modules and cannot meet them") 
+        
+            print
+            inp3 = int(input("how many days you want to rent it ? a days == 1, a month == 30"))
+            while inp3 < 0 and inp3 >= 30:
+                inp3 = int(input("how many days you want to rent it ? a days == 1, a month == 30"))
+        
+        
+        controller().messageBox.append(Order("1", self.id, None, rental_list, inp3))
+    
 
 class Custom(User):
     Current_Order: List[str] # the primary key of Order
@@ -55,8 +97,20 @@ class Custom(User):
     def __init__(self, user_name, user_passwd):
         super().__init__(user_name, user_passwd)
     
-    def appointment_for_they(self):
-        #TODO give a appointment in system 
+    def appointment_for_they(self, inp):
+        pass
+    
+    def perform_action(self, inp):
+        if inp == "1":
+            self.appointment(self)
+        elif inp == "2":
+            return 1 # show inventory
+    
+    def show_action(self):
+        print("""
+              \t1.appointment
+              \t2.show inventory        
+              """)
         pass
 
 class Admin(User):
@@ -64,8 +118,12 @@ class Admin(User):
     def __init__(self, user_name, user_passwd):
         super().__init__(user_name, user_passwd)
     
-    def appointment(custom_id: str):
-        #TODO finish appointment
+    def appointment_for_they(self):
+        #TODO give a appointment in system 
+        pass
+    
+    def show_action(self):
+        #TODO finish action show 
         pass
     
 class Owner(Admin):
@@ -80,8 +138,14 @@ class Owner(Admin):
         #TODO create a admin user and add it to the list
         pass
 
+    def appointment_for_they(self):
+        #TODO give a appointment in system 
+        pass
     
+    def show_action(self):
+        #TODO finish action show 
+        pass
 
-        
 
-
+    
+    

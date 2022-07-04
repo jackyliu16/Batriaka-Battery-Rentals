@@ -14,6 +14,9 @@
 # IMPORT LIB
 import SystemController
 
-if __name__ == "__main__":
+def global_var():
+    # using this variable in other module
+    return controller
 
+if __name__ == "__main__":
     controller = SystemController.SysteController()    
