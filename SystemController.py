@@ -50,6 +50,7 @@ class SysteController(object):
         self.UserList.append(Admin('admin', '123456'))
         self.UserList.append(Custom("customer", "111"))
         self.messageBox.append(Order('1', 'custom_id', "d", {self.Battery_List[0]:4, self.Battery_List[1]:5}, 23))
+        self.log = List[]
 
         # for all kinds of user login in loop
         while True:        
@@ -123,6 +124,7 @@ class SysteController(object):
                     
                     self.Battery_List.append(_Battery("1", type_in, detail, price, number))
                 elif action == 7:
+                    # basicalon pricinple we believe that number of battery only could change by owner 
                     print("you are now changing the information of battery")
                     print("""
                           please select a Battery you want to change
@@ -138,11 +140,10 @@ class SysteController(object):
             \t1.type
             \t2.detail
             \t3.price
-            \t4.number
                           """)
 
                     inp2 = int(input("select a attriabute you want to change: "))
-                    while inp2 not in [1,2,3,4]:
+                    while inp2 not in [1,2,3]:
                         inp2 = int(input("select a attriabute you want to change: "))
 
                     inp3 = input("please input what you want to change to: ")
@@ -158,10 +159,10 @@ class SysteController(object):
                         battery.__setattr__('detail', inp3)
                     elif inp2 == 3:
                         battery.__setattr__('price', inp3)
-                    elif inp2 == 4:
-                        battery.__setattr__('number_now', inp3)                                            
+                    # elif inp2 == 4:
+                    #     battery.__setattr__('number_now', inp3)                                            
                 elif action == 8:
-                    print("you are now changing the information of battery")
+                    print("you are now deleting battery")
                     print("""
                           please select a Battery you want to change
                           """)    
@@ -191,23 +192,31 @@ class SysteController(object):
                         self.Renting_Order.remove(order)
                         self.Finished_Order.append(order)
                 elif action == 11:
-                    # display information
-                    # TODO finish this 
-                    pass
-                elif action == 12:
                     self.register('admin')
-                elif action == 13:
+                elif action == 12:
                     #TODO see log
                     pass
-                elif action == 14:
+                elif action == 13:
                     #TODO see daily invoice
                     pass
-                elif action == 15:
+                elif action == 14:
                     # see staff information
-                    pass
-                elif action == 16:
+                    for user in self.UserList:
+                        if isinstance(user, Admin) and not isinstance(user, Owner):
+                            print(user)
+                elif action == 15:
                     # make request of new battries
-                    pass
+                    # this part is basical as same as change information 
+                    print("which kind of battery will be add? ")
+                    inp = input("please input a number: >")
+                    while inp < 0 or inp > len(self.Battery_List):
+                        inp = input("please input a number: >")
+                    
+                    inp2 = input("please input how many battery you want to add:")
+                    while not inp2.isdigit():
+                        inp2 = input("please input how many battery you want to add:")
+                    
+                    self.Battery_List[int(inp)].__setattr__("number_now", self.Battery_List[int(inp)].number_now+int(inp2))
                 else:
                     # if action not in [user.user_name for user in self.UserList]:
                     #     pass

@@ -41,6 +41,9 @@ class User(object):
     @abc.abstractmethod
     def perform_action(self, inp):
         pass
+    
+    def __str__(self):
+        return f"self.user_name"
 
 
     
