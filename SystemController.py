@@ -50,7 +50,7 @@ class SysteController(object):
         self.UserList.append(Admin('admin', '123456'))
         self.UserList.append(Custom("customer", "111"))
         self.messageBox.append(Order('1', 'custom_id', "d", {self.Battery_List[0]:4, self.Battery_List[1]:5}, 23))
-        self.log = List[]
+        self.log = List[str, day]
 
         # for all kinds of user login in loop
         while True:        

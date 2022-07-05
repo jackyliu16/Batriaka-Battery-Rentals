@@ -113,10 +113,9 @@ class Owner(Admin):
         super().show_action()
         print("""\t      11. display information
               12. add admin
-              13. see log
-              14. view daily invoice
-              15. see staff information
-              16. make request of new battries
+              13. view daily invoice
+              14. see staff information
+              15. make request of new battries
                 """)
         pass
 
@@ -140,7 +139,6 @@ class Owner(Admin):
         elif inp == "13":return 13
         elif inp == "14":return 14
         elif inp == "15":return 15
-        elif inp == "16":return 16
         
 
     
