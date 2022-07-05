@@ -24,22 +24,26 @@ class Day(object):
         self.fullinformation = []
         self.record = []
     
+    def get_today(self) -> str:
+        return self.distinguish
+    
     def add_log(self, information:str):
         self.fullinformation.append(datetime.datetime.now())
         self.record.append(information)
     
     def check_if_is_today(self):
-        return datetime.datetime.now().strftime("%X") == self.distinguish
+        return datetime.datetime.now().strftime("%x") == self.distinguish
     
     def __str__(self):
-        print("="*28+"-LOG-"+"="*27)
+        print("="*48+"-LOG-"+"="*47)
         [print("\t", self.fullinformation[i], self.record[i]) for i in range(len(self.record))]
-        print("==="*20)
+        print("="*100)
         return ""
         # return f"[log of {self.distinguish}]" + str([print("\t", self.fullinformation[i], self.record[i]) for i in range(len(self.record)) ])
     
 if __name__ == "__main__":
     Day1 = Day()
+    print(type(Day1.distinguish))
     Day1.add_log("information")
     Day1.add_log("information2")
     print(Day1)

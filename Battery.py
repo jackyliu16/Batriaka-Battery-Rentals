@@ -34,3 +34,6 @@ class _Battery(object):
 
     def information_print():
         return f"type:{self.type}\tprice:{self.price}\tnumber:{self.number_now}"
+    
+    def print_name(self):
+        return self.type

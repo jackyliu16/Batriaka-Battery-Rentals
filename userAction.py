@@ -78,7 +78,7 @@ class Admin(User):
     def perform_action(self, inp):
         if inp == '1':
             inp = input("please input customer name: >")
-            return user_name 
+            return inp 
         elif inp == '2':return 1 
         elif inp == "3":return 3
         elif inp == "4":return 4
@@ -111,7 +111,7 @@ class Owner(Admin):
     
     def show_action(self):
         super().show_action()
-        print("""\t      11. display information
+        print("""\t      11. display log
               12. add admin
               13. view daily invoice
               14. see staff information

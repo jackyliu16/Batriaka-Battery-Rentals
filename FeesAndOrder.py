@@ -55,3 +55,9 @@ class Order(object):
         # it seem we chouldn't using \t here
         return str([f"{i.type}   {self.rental_Dict[i]}" for i in self.rental_Dict])
     
+    def print_name_and_number(self):
+        s = "{"
+        for i in self.rental_Dict.keys():
+            s += str(i.type)
+            s += ":" + str(self.rental_Dict[i]) + ",  "
+        return s + "}"

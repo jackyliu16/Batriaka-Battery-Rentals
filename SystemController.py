@@ -32,7 +32,7 @@ class SysteController(object):
     UserList: List[User]
     user_now: User
     messageBox: List[Order]
-    
+    log = Dict[str, Day]
     
     def __init__(self) -> None:
         self.user_now = None
@@ -40,6 +40,7 @@ class SysteController(object):
         self.Renting_Order = []
         self.Battery_List = []
         self.UserList = []
+        self.log = {}
         self.messageBox = [Order]
         
         # add somthing default battery in system
@@ -50,14 +51,27 @@ class SysteController(object):
         self.UserList.append(Admin('admin', '123456'))
         self.UserList.append(Custom("customer", "111"))
         self.messageBox.append(Order('1', 'custom_id', "d", {self.Battery_List[0]:4, self.Battery_List[1]:5}, 23))
-        self.log = List[str, day]
+        self.day = Day() # init a new day ( today: it will adding to log until change to another day )
 
         # for all kinds of user login in loop
         while True:        
-            print("Loop 1")
+            
+            # print("Loop 1")
             self.login()
             while True:
-                print("LOOP 2")
+                
+                # print(self.day)
+                
+                # check if today is a new day
+                if self.day.check_if_is_today():
+                    pass
+                else:
+                    print("innn")
+                    self.log[self.day.get_today()] = self.day
+                    self.day = Day() # create a new day and set it as today 
+                    # self.log[self.day.get_today()] = self.day
+        
+                # print("LOOP 2")
                 assert self.user_now is not None
                 self.user_now.show_action()
                 inp = input("please input your choice:>")
@@ -70,7 +84,10 @@ class SysteController(object):
                 elif action == 2:
                     assert self.user_now is not None
                     self.appointment(self.user_now)
+                    
+                    # log will be add in appointment
                 elif action == -1:
+                    # login out
                     print("you are now quit this account !!!")
                     self.user_now = None
                     break
@@ -80,12 +97,17 @@ class SysteController(object):
                     # [print(f"{i}:\t", [f"{j.type} \t {self.messageBox[i].rental_Dict[j]}"for j in self.messageBox[i].rental_Dict]) for i in range(len(self.messageBox))]
                 elif action == 4:
                     # delete message
-                    inp = int(input("please input the message number you want to delete: "))
-                    if inp < len(self.messageBox):
-                        self.messageBox.pop(int(inp))
+                    inp = input("please input the message number you want to delete: ")
+                    if inp.isdigit():
+                        if inp < len(self.messageBox) and inp >= 0:
+                            self.day.add_log(f"{self.user_now.user_name} delete {self.messageBox[inp]}")
+                            self.messageBox.pop(int(inp))
+                        else:
+                            print("the index not existed so it couldn't been delete! ")
                     else:
-                        print("the index not existed so it couldn't been delete! ")
+                        print("you should input a number !!!")
                 elif action == 5:
+                    # transmit message to order
                     inp = int(input("please input the number of order you want to transmit!:>"))
                     if inp < 0 or inp > len(self.messageBox):
                         print("ERROR: index out of bround!!!")
@@ -96,10 +118,11 @@ class SysteController(object):
                                 # if there is one things will not match
                                 print("Error: because out of inventory! ")
                                 break
-                        # if all need could be satisfy
+                        # if all need could be satisfy (delete inventory)
                         for key in order.rental_Dict:
                             key.number_now -= order.rental_Dict[key]
-                            print(key.number_now)
+                            # print(key.number_now)
+                        self.day.add_log(f"{self.user_now.user_name} transimt message {inp} : {order.print_name_and_number()} to order")
                         self.messageBox.remove(order)
                         self.Renting_Order.append(order)
                 elif action == 6:
@@ -122,6 +145,7 @@ class SysteController(object):
                     print("if you want to input number of the battery now, you can just do it(only one changes)")
                     number = input("please input the number of battery: ")
                     
+                    self.day.add_log(f"{self.user_now.user_name} add Battery {type_in},{detail}, {price}, {number}")
                     self.Battery_List.append(_Battery("1", type_in, detail, price, number))
                 elif action == 7:
                     # basicalon pricinple we believe that number of battery only could change by owner 
@@ -152,6 +176,8 @@ class SysteController(object):
                     if inp2 == 3 or inp2 == 4:
                         inp3 = int(inp3)
 
+                    type_map = {1: "type", 2: 'detail', 3:'price'}
+                    self.day.add_log(f"{self.user_now.user_name} repleace {self.Battery_List.print_name}'s {type_map[inp2]} from '{self.Battery_List[index].__getattribute__(type_map[inp2])}' to '{inp3}'")
                     battery = self.Battery_List[inp]
                     if inp2 == 1:
                         battery.__setattr__('type', inp3)
@@ -168,12 +194,13 @@ class SysteController(object):
                           """)    
                     for index in range(len(self.Battery_List)):
                         print("\t", index, self.Battery_List[index].type, end="\n")
-                        
+                    # log information
+                    self.day.add_log(f"{self.user_now} remove {self.Battery_List[index]}")
                     self.Battery_List.remove(index)
                     print("finish remove battery!")
                 elif action == 9:
-                    for item in self.Renting_Order:
-                        print(item)
+                    for i in range(len(self.Renting_Order)):
+                        print(i, self.Renting_Order[i])
                 elif action == 10:
                     # checkout order
         
@@ -181,24 +208,26 @@ class SysteController(object):
                         print(item)
                     
                     inp = int(input("please input the number of order you want to transmit!:>"))
-                    if inp < 0 or inp > len(self.Renting_Order):
+                    if inp < 0 or inp >= len(self.Renting_Order):
                         print("ERROR: index out of bround!!!")
                     else:
                         order:Order = self.Renting_Order[inp]
                         # if all need could be satisfy
                         for key in order.rental_Dict:
                             key.number_now += order.rental_Dict[key]
+                        print(order)
                         order.rental_end_time = datetime.datetime.now()
                         self.Renting_Order.remove(order)
                         self.Finished_Order.append(order)
                 elif action == 11:
-                    self.register('admin')
+                    # show log information
+                    for day in self.log:
+                        print(day)
+                    print(self.day)
                 elif action == 12:
-                    #TODO see log
-                    pass
+                    self.register('admin')
                 elif action == 13:
-                    #TODO see daily invoice
-                    pass
+                    print(self.day)
                 elif action == 14:
                     # see staff information
                     for user in self.UserList:
@@ -221,9 +250,10 @@ class SysteController(object):
                     # if action not in [user.user_name for user in self.UserList]:
                     #     pass
                     # else:
+                    [print(user) for user in self.UserList]
                     for user in self.UserList:
                         if user.user_name == action:
-                            self.appointment(action)
+                            self.appointment(user)
                 
     def show_inventory(self):
         print("="*30)
@@ -300,10 +330,11 @@ class SysteController(object):
         print("="*30)
 
 
-        inp3 = int(input("how many days you want to rent it ? (a days == 1)"))
-        while inp3 < 0 and inp3 >= 30:
-            inp3 = int(input("how many days you want to rent it ? (a days == 1)"))
+        inp3 = input("how many days you want to rent it ? (a days == 1)")
+        while ( int(inp3) < 0 and int(inp3) >= 30 ) or not inp3.isdigit() :
+            inp3 = input("how many days you want to rent it ? (a days == 1)")
         
+        inp3 = int(inp3)
         print("your message is allready been sent!!! please wait for admin")
         self.messageBox.append(Order("1", user, None, rental_Dict, inp3))
     
