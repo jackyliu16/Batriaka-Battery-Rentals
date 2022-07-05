@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- encoding: utf-8 -*- 
 """
 @File   : SystemController.py
@@ -18,6 +17,7 @@ import time
 from FeesAndOrder import Fee, Order
 from Battery import _Battery
 import datetime
+from day import Day
 
 
 
