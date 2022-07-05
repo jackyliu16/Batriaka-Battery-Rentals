@@ -11,6 +11,7 @@
 """
 
 #IMPORT LIB
+import sys
 from userAction import User, Custom, Admin, Owner
 from typing import Dict, List
 import time
@@ -240,7 +241,7 @@ class SysteController(object):
                     # see staff information
                     for user in self.UserList:
                         if isinstance(user, Admin) and not isinstance(user, Owner):
-                            print(user.name, end=" ")
+                            print(user.user_name, end=" ")
                 elif action == 15:
                     # make request of new battries
                     # this part is basical as same as change information 
