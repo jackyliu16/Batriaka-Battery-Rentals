@@ -179,7 +179,7 @@ class SysteController(object):
                         inp3 = int(inp3)
 
                     type_map = {1: "type", 2: 'detail', 3:'price'}
-                    self.day.add_log(f"{self.user_now.user_name} repleace {self.Battery_List[inp].print_name}'s {type_map[inp2]} from '{self.Battery_List[index].__getattribute__(type_map[inp2])}' to '{inp3}'")
+                    self.day.add_log(f"{self.user_now.user_name} repleace {self.Battery_List[inp].print_name()}'s {type_map[inp2]} from '{self.Battery_List[index].__getattribute__(type_map[inp2])}' to '{inp3}'")
                     battery = self.Battery_List[inp]
                     if inp2 == 1:
                         battery.__setattr__('type', inp3)
@@ -204,7 +204,7 @@ class SysteController(object):
                     
                     
                     # log information
-                    self.day.add_log(f"{self.user_now} remove {self.Battery_List[inp]}")
+                    self.day.add_log(f"{self.user_now} remove {self.Battery_List[inp].print_name()}")
                     self.Battery_List.pop(inp)
                     print("finish remove battery!")
                 elif action == 9:
