@@ -99,6 +99,7 @@ class SysteController(object):
                     # delete message
                     inp = input("please input the message number you want to delete: ")
                     if inp.isdigit():
+                        inp = int(inp)
                         if inp < len(self.messageBox) and inp >= 0:
                             self.day.add_log(f"{self.user_now.user_name} delete {self.messageBox[inp]}")
                             self.messageBox.pop(int(inp))
@@ -171,13 +172,13 @@ class SysteController(object):
                         inp2 = int(input("select a attriabute you want to change: "))
 
                     inp3 = input("please input what you want to change to: ")
-                    while (inp2 == 3 or inp2 == 4 ) and inp3.isdigit():
+                    while inp2 == 3 and not inp3.isdigit():
                         inp3 = input("please input what you want to change to: ")
-                    if inp2 == 3 or inp2 == 4:
+                    if inp2 == 3 :
                         inp3 = int(inp3)
 
                     type_map = {1: "type", 2: 'detail', 3:'price'}
-                    self.day.add_log(f"{self.user_now.user_name} repleace {self.Battery_List.print_name}'s {type_map[inp2]} from '{self.Battery_List[index].__getattribute__(type_map[inp2])}' to '{inp3}'")
+                    self.day.add_log(f"{self.user_now.user_name} repleace {self.Battery_List[inp].print_name}'s {type_map[inp2]} from '{self.Battery_List[index].__getattribute__(type_map[inp2])}' to '{inp3}'")
                     battery = self.Battery_List[inp]
                     if inp2 == 1:
                         battery.__setattr__('type', inp3)
@@ -194,9 +195,16 @@ class SysteController(object):
                           """)    
                     for index in range(len(self.Battery_List)):
                         print("\t", index, self.Battery_List[index].type, end="\n")
+                    
+                    inp = input("please input a battery you want to delete: (if you don't want to detect everything just blanked it):")    
+                    while not inp == "" and not inp.isdigit():
+                        inp = input("please input a battery you want to delete: (if you don't want to detect everything just blanked it):")    
+                    inp = int(inp)
+                    
+                    
                     # log information
-                    self.day.add_log(f"{self.user_now} remove {self.Battery_List[index]}")
-                    self.Battery_List.remove(index)
+                    self.day.add_log(f"{self.user_now} remove {self.Battery_List[inp]}")
+                    self.Battery_List.pop(inp)
                     print("finish remove battery!")
                 elif action == 9:
                     for i in range(len(self.Renting_Order)):
@@ -232,15 +240,16 @@ class SysteController(object):
                     # see staff information
                     for user in self.UserList:
                         if isinstance(user, Admin) and not isinstance(user, Owner):
-                            print(user)
+                            print(user.name, end=" ")
                 elif action == 15:
                     # make request of new battries
                     # this part is basical as same as change information 
                     print("which kind of battery will be add? ")
                     inp = input("please input a number: >")
-                    while inp < 0 or inp > len(self.Battery_List):
-                        inp = input("please input a number: >")
-                    
+                    while not inp.isdigit() or (int(inp) < 0 or int(inp) >= len(self.Battery_List)):
+                        inp = input("please input a number again: >")
+                    inp = int(inp)
+                
                     inp2 = input("please input how many battery you want to add:")
                     while not inp2.isdigit():
                         inp2 = input("please input how many battery you want to add:")
@@ -250,7 +259,7 @@ class SysteController(object):
                     # if action not in [user.user_name for user in self.UserList]:
                     #     pass
                     # else:
-                    [print(user) for user in self.UserList]
+                    # [print(user.usee_name) for user in self.UserList]
                     for user in self.UserList:
                         if user.user_name == action:
                             self.appointment(user)
@@ -268,7 +277,9 @@ class SysteController(object):
         while True:
             user_name = input("user name:")
             user_passwd = input("user passwd:")
-            if user_name == "" and user_passwd == "":
+            if user_name.upper() == 'QUIT' or user_passwd.upper() == "QUIT":
+                sys.exit(0)  
+            elif user_name == "" and user_passwd == "":
                 self.register("customer")
             else:
                 for user in self.UserList:
@@ -317,12 +328,14 @@ class SysteController(object):
                 
             inp2 = int(inp2)
             
-            
             if self.Battery_List[int(inp)].number_now >= inp2:
                 rental_Dict[self.Battery_List[int(inp)]] = inp2
                 print("record")
             else:
-                print("you reserve too many modules and cannot meet them") 
+                print("you reserve too many modules and cannot meet them")
+                 
+        if inp == "" or inp2 == "":
+            return 
         
         print("lead me recheck your appointment:")
         print("="*30)
