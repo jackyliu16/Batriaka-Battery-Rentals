@@ -32,6 +32,8 @@ class SysteController(object):
     UserList: List[User]
     user_now: User
     messageBox: List[Order]
+    
+    
     def __init__(self) -> None:
         self.user_now = None
         self.Finished_Order = []
@@ -194,6 +196,18 @@ class SysteController(object):
                     pass
                 elif action == 12:
                     self.register('admin')
+                elif action == 13:
+                    #TODO see log
+                    pass
+                elif action == 14:
+                    #TODO see daily invoice
+                    pass
+                elif action == 15:
+                    # see staff information
+                    pass
+                elif action == 16:
+                    # make request of new battries
+                    pass
                 else:
                     # if action not in [user.user_name for user in self.UserList]:
                     #     pass

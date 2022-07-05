@@ -51,9 +51,6 @@ class Custom(User):
     def __init__(self, user_name, user_passwd):
         super().__init__(user_name, user_passwd)
     
-    def appointment_for_they(self, inp):
-        pass
-    
     def perform_action(self, inp):
         if inp == "1":
             return 2
@@ -109,22 +106,14 @@ class Owner(Admin):
     
     # he wasn't having any kind of password or other things, was the only things in the project
     
-    def display_information():
-        #TODO finish the detail of this battery rent enterprise
-        pass
-
-    def add_admin(name, passwd):
-        #TODO create a admin user and add it to the list
-        pass
-
-    def appointment_for_they(self):
-        #TODO give a appointment in system 
-        pass
-    
     def show_action(self):
         super().show_action()
         print("""\t      11. display information
               12. add admin
+              13. see log
+              14. view daily invoice
+              15. see staff information
+              16. make request of new battries
                 """)
         pass
 
@@ -145,6 +134,10 @@ class Owner(Admin):
         elif inp == "10":return 10
         elif inp == "11":return 11
         elif inp == "12":return 12
+        elif inp == "13":return 13
+        elif inp == "14":return 14
+        elif inp == "15":return 15
+        elif inp == "16":return 16
         
 
     
